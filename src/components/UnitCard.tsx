@@ -4,8 +4,18 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { MapPin, Users, BadgeCheck, Heart, Star, Building2 } from 'lucide-react';
 import type { ProtectedUnit } from '@/lib/data';
+import { useFavorites } from '@/lib/favorites';
+import { useToast } from '@/components/Toast';
 
 export default function UnitCard({ unit }: { unit: ProtectedUnit }) {
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const { addToast } = useToast();
+  const fav = isFavorite(unit.id);
+
+  const handleFavorite = () => {
+    toggleFavorite(unit.id);
+    addToast(fav ? `${unit.name} eliminată din favorite` : `${unit.name} salvată la favorite`, fav ? 'info' : 'success');
+  };
   const impactPercent = Math.round((unit.employeesWithDisabilities / unit.totalEmployees) * 100);
 
   return (
@@ -124,10 +134,11 @@ export default function UnitCard({ unit }: { unit: ProtectedUnit }) {
           <motion.button
             whileHover={{ scale: 1.15 }}
             whileTap={{ scale: 0.9 }}
-            className="px-3 py-2.5 border border-border text-text-light rounded-xl hover:bg-rose-50 hover:text-rose-500 hover:border-rose-200 transition-all"
-            aria-label={`Salvează ${unit.name} la favorite`}
+            onClick={handleFavorite}
+            className={`px-3 py-2.5 border rounded-xl transition-all ${fav ? 'bg-rose-50 text-rose-500 border-rose-200' : 'border-border text-text-light hover:bg-rose-50 hover:text-rose-500 hover:border-rose-200'}`}
+            aria-label={fav ? `Elimină ${unit.name} din favorite` : `Salvează ${unit.name} la favorite`}
           >
-            <Heart className="w-4 h-4" aria-hidden="true" />
+            <Heart className={`w-4 h-4 ${fav ? 'fill-current' : ''}`} aria-hidden="true" />
           </motion.button>
         </div>
       </div>

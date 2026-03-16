@@ -217,3 +217,75 @@ html {
   background: rgba(37, 99, 235, 0.15);
   color: #1E293B;
 }
+
+/* ========== DARK MODE ========== */
+.dark {
+  --background: #0B1120;
+  --foreground: #E2E8F0;
+}
+.dark .glass {
+  background: rgba(15, 23, 42, 0.8);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+.dark .bg-white { background-color: #1E293B !important; }
+.dark .bg-surface { background-color: #0F172A !important; }
+.dark .bg-surface-dark { background-color: #1E293B !important; }
+.dark .border-border { border-color: #334155 !important; }
+.dark .text-text { color: #F1F5F9 !important; }
+.dark .text-text-light { color: #94A3B8 !important; }
+.dark .text-text-lighter { color: #64748B !important; }
+.dark .dot-pattern {
+  background-image: radial-gradient(circle, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+}
+.dark .card-shine::after {
+  background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.02) 50%, transparent 60%);
+}
+.dark ::-webkit-scrollbar-track { background: #0F172A; }
+
+/* ========== ACCESSIBILITY: HIGH CONTRAST ========== */
+.high-contrast .text-text,
+.high-contrast .text-text-light,
+.high-contrast .text-text-lighter {
+  color: #000 !important;
+}
+.high-contrast .dark .text-text,
+.high-contrast .dark .text-text-light,
+.high-contrast .dark .text-text-lighter {
+  color: #fff !important;
+}
+.high-contrast .border-border {
+  border-color: #000 !important;
+}
+.high-contrast a { text-decoration: underline; }
+
+/* ========== ACCESSIBILITY: DYSLEXIA FONT ========== */
+.dyslexia-font * {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif !important;
+  letter-spacing: 0.05em;
+  word-spacing: 0.12em;
+  line-height: 1.8;
+}
+
+/* ========== ACCESSIBILITY: REDUCE MOTION ========== */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* ========== ACCESSIBILITY: HIGHLIGHT LINKS ========== */
+.highlight-links a {
+  outline: 2px solid #2563EB !important;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.highlight-links .dark a {
+  outline-color: #60A5FA !important;
+}
+
+/* ========== ACCESSIBILITY: FONT SCALE ========== */
+html {
+  font-size: calc(16px * var(--font-scale, 1));
+}

@@ -232,6 +232,7 @@ export const accessibilityTools: AccessibilityTool[] = [
     category: 'Design',
     difficulty: 'Începător',
     userType: ['Designer', 'Dezvoltator'],
+    url: '/tool-uri/contrast-checker',
   },
   {
     id: '3',
@@ -295,6 +296,7 @@ export const accessibilityTools: AccessibilityTool[] = [
     category: 'Audit',
     difficulty: 'Intermediar',
     userType: ['Dezvoltator', 'Designer'],
+    url: '/tool-uri/checklist-web',
   },
   {
     id: '10',

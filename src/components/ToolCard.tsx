@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   FileCheck, Palette, Image, ClipboardCheck, Type, FileText,
@@ -66,14 +67,21 @@ export default function ToolCard({ tool }: { tool: AccessibilityTool }) {
         </div>
 
         {/* Action */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 btn-primary text-white text-sm font-semibold rounded-xl group/btn"
-        >
-          Deschide Tool
-          <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
-        </motion.button>
+        {tool.url ? (
+          <Link href={tool.url} className="w-full flex items-center justify-center gap-2 px-4 py-3 btn-primary text-white text-sm font-semibold rounded-xl group/btn">
+            Deschide Tool
+            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
+          </Link>
+        ) : (
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-surface text-text-light text-sm font-semibold rounded-xl cursor-not-allowed"
+            disabled
+          >
+            În Curând
+          </motion.button>
+        )}
       </div>
     </motion.article>
   );

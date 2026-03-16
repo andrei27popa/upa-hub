@@ -4,11 +4,13 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Heart, Shield } from 'lucide-react';
+import DarkModeToggle from '@/components/DarkModeToggle';
 
 const navLinks = [
   { href: '/', label: 'Acasă' },
   { href: '/unitati-protejate', label: 'Unități Protejate' },
-  { href: '/tool-uri', label: 'Tool-uri Accesibilitate' },
+  { href: '/tool-uri', label: 'Tool-uri' },
+  { href: '/calculator', label: 'Calculator' },
   { href: '/despre', label: 'Despre' },
   { href: '/resurse', label: 'Resurse' },
   { href: '/contact', label: 'Contact' },
@@ -63,6 +65,7 @@ export default function Navbar() {
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
+            <DarkModeToggle />
             <Link href="/inscrie-unitate" className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl">
               <Heart className="w-4 h-4" aria-hidden="true" />
               Înscrie o Unitate

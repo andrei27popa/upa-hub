@@ -2,14 +2,100 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import {
   ArrowRight, Search, Shield, Users, Heart, TrendingUp,
   Building2, Wrench, CheckCircle2, Star, Handshake, Sparkles, Zap,
+  Calculator, BookOpen, Quote, ChevronLeft, ChevronRight,
+  FileCheck, Palette, Globe, Target, Award, Lightbulb,
 } from 'lucide-react';
 import UnitCard from '@/components/UnitCard';
 import ToolCard from '@/components/ToolCard';
 import { FadeIn, StaggerContainer, StaggerItem, AnimatedCounter, FloatingElement, AnimatedOrbs } from '@/components/animations';
 import { protectedUnits, accessibilityTools } from '@/lib/data';
+
+const testimonials = [
+  { quote: 'Colaborarea cu Atelierul de Incluziune ne-a adus nu doar produse de calitate, ci și satisfacția de a contribui la incluziunea socială. O experiență care ne-a schimbat perspectiva asupra diversității la locul de muncă.', author: 'Alexandru Popescu', role: 'Director Achiziții, TechCorp', unit: 'Atelierul de Incluziune', rating: 5 },
+  { quote: 'DigiAccess ne-a ajutat să ne facem platforma accesibilă. Expertiză reală în testare de accesibilitate. Au identificat probleme pe care echipa noastră le-a ratat complet.', author: 'Cristina Vasilescu', role: 'CTO, InnoSoft', unit: 'DigiAccess Solutions', rating: 5 },
+  { quote: 'De când colaborăm cu GreenHope, colegii sunt mai fericiți la prânz și noi contribuim la o cauză bună. Calitatea mâncării este excepțională.', author: 'Sergiu Bălan', role: 'Office Manager, MarinaCorp', unit: 'GreenHope Catering', rating: 5 },
+  { quote: 'TechAbility ne-a ajutat să identificăm 47 de probleme de accesibilitate pe care echipa noastră internă le-a ratat. Perspectiva lor unică este de neprețuit.', author: 'Diana Luca', role: 'Product Manager, FinTech Pro', unit: 'TechAbility', rating: 5 },
+  { quote: 'PackSocial gestionează ambalarea pentru trei din liniile noastre de produse. Calitate constantă și livrare la timp, de peste 3 ani.', author: 'Ana Grigorescu', role: 'Supply Chain Manager, FreshFoods', unit: 'PackSocial', rating: 4 },
+  { quote: 'Cadourile corporate personalizate de la ArtIncluziv au fost senzația evenimentului nostru anual. Calitate, suflet și impact social într-un singur pachet.', author: 'Marta Constantinescu', role: 'Event Manager, CorporateEvents', unit: 'ArtIncluziv', rating: 5 },
+];
+
+function TestimonialsSection() {
+  const [current, setCurrent] = useState(0);
+  const testimonialsPerPage = typeof window !== 'undefined' && window.innerWidth >= 768 ? 2 : 1;
+  const maxIndex = Math.max(0, testimonials.length - testimonialsPerPage);
+  const next = () => setCurrent(i => Math.min(i + 1, maxIndex));
+  const prev = () => setCurrent(i => Math.max(i - 1, 0));
+
+  return (
+    <section className="bg-white py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FadeIn>
+          <div className="flex justify-between items-end mb-12">
+            <div>
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-accent/5 text-accent text-sm font-semibold rounded-full mb-4">
+                <Quote className="w-4 h-4" aria-hidden="true" /> Testimoniale
+              </span>
+              <h2 className="text-4xl font-extrabold text-text tracking-tight">
+                Ce spun <span className="gradient-text">partenerii noștri</span>
+              </h2>
+              <p className="text-text-light mt-2">Povești reale de la companii care colaborează cu unități protejate</p>
+            </div>
+            <div className="hidden md:flex gap-2">
+              <button onClick={prev} disabled={current === 0} className="w-10 h-10 rounded-xl border border-border flex items-center justify-center text-text-light hover:bg-surface hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-all" aria-label="Testimonial anterior">
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button onClick={next} disabled={current >= maxIndex} className="w-10 h-10 rounded-xl border border-border flex items-center justify-center text-text-light hover:bg-surface hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-all" aria-label="Testimonial următor">
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </FadeIn>
+
+        <div className="overflow-hidden">
+          <motion.div
+            className="flex gap-6"
+            animate={{ x: `-${current * (100 / 2 + 1.5)}%` }}
+            transition={{ type: 'spring', stiffness: 200, damping: 30 }}
+          >
+            {testimonials.map((t, i) => (
+              <motion.div key={i} className="min-w-[calc(50%-12px)] max-md:min-w-full" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+                <div className="bg-surface rounded-2xl p-8 border border-border h-full flex flex-col">
+                  <div className="flex gap-1 mb-4" aria-label={`Rating: ${t.rating} din 5`}>
+                    {Array.from({ length: 5 }).map((_, si) => (
+                      <Star key={si} className={`w-4 h-4 ${si < t.rating ? 'text-accent fill-accent' : 'text-border'}`} aria-hidden="true" />
+                    ))}
+                  </div>
+                  <blockquote className="text-text leading-relaxed flex-1 mb-6 italic">&ldquo;{t.quote}&rdquo;</blockquote>
+                  <div className="flex items-center gap-3 pt-4 border-t border-border">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-impact flex items-center justify-center text-white font-bold text-sm">{t.author.charAt(0)}</div>
+                    <div>
+                      <p className="font-semibold text-text text-sm">{t.author}</p>
+                      <p className="text-text-lighter text-xs">{t.role}</p>
+                    </div>
+                    <span className="ml-auto px-2.5 py-0.5 bg-secondary/10 text-secondary text-xs font-semibold rounded-full">{t.unit}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
+        <FadeIn delay={0.3}>
+          <div className="text-center mt-10">
+            <Link href="/povesti-succes" className="inline-flex items-center gap-2 px-6 py-3 text-primary font-semibold hover:bg-primary/5 rounded-xl transition-colors">
+              Vezi toate poveștile de succes
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -130,7 +216,7 @@ export default function HomePage() {
               { icon: Building2, value: 150, suffix: '+', label: 'Unități Protejate', color: 'from-primary to-primary-light', iconColor: 'text-primary' },
               { icon: Users, value: 3500, suffix: '+', label: 'Persoane Angajate', color: 'from-secondary to-emerald-400', iconColor: 'text-secondary' },
               { icon: Handshake, value: 800, suffix: '+', label: 'Colaborări Active', color: 'from-accent to-amber-400', iconColor: 'text-accent' },
-              { icon: Wrench, value: 12, suffix: '', label: 'Tool-uri Disponibile', color: 'from-impact to-purple-400', iconColor: 'text-impact' },
+              { icon: Wrench, value: 14, suffix: '', label: 'Tool-uri Disponibile', color: 'from-impact to-purple-400', iconColor: 'text-impact' },
             ].map((stat, i) => (
               <FadeIn key={stat.label} delay={i * 0.1}>
                 <div className="bg-white rounded-2xl border border-border p-6 text-center card-hover shadow-sm">
@@ -253,8 +339,50 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ====== FEATURED TOOLS ====== */}
+      {/* ====== HOW IT WORKS ====== */}
       <section className="bg-white py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center mb-16">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary/5 text-secondary text-sm font-semibold rounded-full mb-4">
+                <Target className="w-4 h-4" aria-hidden="true" /> Cum funcționează
+              </span>
+              <h2 className="text-4xl lg:text-5xl font-extrabold text-text mb-5 tracking-tight">
+                De la căutare la <span className="gradient-text">colaborare</span>, în 4 pași
+              </h2>
+              <p className="text-text-light text-lg">Procesul este simplu, transparent și complet gratuit.</p>
+            </div>
+          </FadeIn>
+
+          <div className="relative">
+            {/* Connection line */}
+            <div className="hidden lg:block absolute top-24 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-primary via-secondary via-accent to-impact opacity-20" aria-hidden="true" />
+
+            <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-8" staggerDelay={0.15}>
+              {[
+                { step: '01', icon: Search, title: 'Descoperă', description: 'Explorează directorul de unități protejate. Filtrează după servicii, regiune sau domeniu de activitate.', color: 'from-primary to-primary-light' },
+                { step: '02', icon: FileCheck, title: 'Evaluează', description: 'Citește profilurile detaliate, verifică certificările și scorul de impact social al fiecărei unități.', color: 'from-secondary to-emerald-400' },
+                { step: '03', icon: Handshake, title: 'Contactează', description: 'Trimite o cerere de ofertă sau contactează direct unitatea. Noi facilităm prima conexiune.', color: 'from-accent to-amber-400' },
+                { step: '04', icon: Award, title: 'Colaborează', description: 'Începe colaborarea și contribuie la incluziunea persoanelor cu dizabilități în câmpul muncii.', color: 'from-impact to-purple-400' },
+              ].map((item) => (
+                <StaggerItem key={item.step}>
+                  <motion.div whileHover={{ y: -6 }} className="relative text-center group">
+                    <div className={`w-20 h-20 mx-auto mb-6 rounded-3xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow relative z-10`}>
+                      <item.icon className="w-9 h-9 text-white" aria-hidden="true" />
+                    </div>
+                    <span className="text-6xl font-black text-surface-dark absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 z-0 select-none" aria-hidden="true">{item.step}</span>
+                    <h3 className="font-bold text-text text-xl mb-2">{item.title}</h3>
+                    <p className="text-text-light text-sm leading-relaxed">{item.description}</p>
+                  </motion.div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </div>
+      </section>
+
+      {/* ====== FEATURED TOOLS ====== */}
+      <section className="bg-surface dot-pattern py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
             <div className="flex justify-between items-end mb-10">
@@ -280,6 +408,25 @@ export default function HomePage() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+
+          {/* Calculator CTA */}
+          <FadeIn delay={0.3}>
+            <motion.div whileHover={{ y: -4 }} className="mt-10 relative overflow-hidden rounded-2xl border border-border bg-white p-8 lg:p-10">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-secondary/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/2" aria-hidden="true" />
+              <div className="relative flex flex-col lg:flex-row items-center gap-6">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary to-emerald-400 flex items-center justify-center shadow-lg shrink-0">
+                  <Calculator className="w-8 h-8 text-white" aria-hidden="true" />
+                </div>
+                <div className="flex-1 text-center lg:text-left">
+                  <h3 className="text-xl font-bold text-text mb-1">Calculator Economii Colaborare UPA</h3>
+                  <p className="text-text-light">Află cât poți economisi anual prin colaborarea cu o unitate protejată vs. plata contribuției la bugetul de stat.</p>
+                </div>
+                <Link href="/calculator" className="btn-primary inline-flex items-center gap-2 px-8 py-3.5 text-white font-semibold rounded-xl shrink-0">
+                  Calculează acum <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </Link>
+              </div>
+            </motion.div>
+          </FadeIn>
         </div>
       </section>
 
@@ -301,11 +448,12 @@ export default function HomePage() {
                 Fiecare colaborare cu o unitate protejată schimbă vieți. Facilităm conexiuni care generează
                 locuri de muncă, independență economică și demnitate.
               </p>
-              <div className="grid grid-cols-3 gap-8 max-w-lg mx-auto">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-2xl mx-auto">
                 {[
                   { value: 92, suffix: '%', label: 'Rată de satisfacție' },
                   { value: 2500000, prefix: '€', suffix: '', label: 'Valoare contracte' },
                   { value: 1200, suffix: '+', label: 'Vieți schimbate' },
+                  { value: 45, suffix: '%', label: 'Economie medie' },
                 ].map((stat) => (
                   <div key={stat.label}>
                     <p className="text-3xl lg:text-4xl font-extrabold text-secondary-light">
@@ -323,6 +471,60 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ====== TESTIMONIALS CAROUSEL ====== */}
+      <TestimonialsSection />
+
+      {/* ====== BLOG PREVIEW ====== */}
+      <section className="bg-surface dot-pattern py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeIn>
+            <div className="flex justify-between items-end mb-10">
+              <div>
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/5 text-primary text-sm font-semibold rounded-full mb-4">
+                  <BookOpen className="w-4 h-4" aria-hidden="true" /> Blog
+                </span>
+                <h2 className="text-4xl font-extrabold text-text tracking-tight">
+                  Articole & <span className="gradient-text">Resurse</span>
+                </h2>
+                <p className="text-text-light mt-2">Legislație, ghiduri practice și povești de succes</p>
+              </div>
+              <Link href="/blog" className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 text-primary font-semibold border border-primary/20 rounded-xl hover:bg-primary/5 transition-all">
+                Toate articolele <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </Link>
+            </div>
+          </FadeIn>
+
+          <StaggerContainer className="grid md:grid-cols-3 gap-6" staggerDelay={0.12}>
+            {[
+              { title: 'Legea 448/2006: Tot ce trebuie să știi', category: 'Legislație', date: '15 Mar 2025', readTime: 8, excerpt: 'Ghid complet privind obligațiile angajatorilor cu peste 50 de angajați și avantajele colaborării cu unitățile protejate autorizate.', color: 'from-primary to-primary-light', slug: 'legea-448-2006-ghid-complet' },
+              { title: '5 Beneficii ale colaborării cu o unitate protejată', category: 'Incluziune', date: '2 Mar 2025', readTime: 5, excerpt: 'Descoperă cum colaborarea cu unitățile protejate aduce beneficii economice, sociale și de imagine companiei tale.', color: 'from-secondary to-emerald-400', slug: '5-beneficii-colaborare-upa' },
+              { title: 'Cum să faci un website accesibil', category: 'Accesibilitate', date: '18 Feb 2025', readTime: 12, excerpt: 'Ghid complet WCAG 2.1 pentru dezvoltatori și designeri care vor să creeze experiențe digitale incluzive pentru toți.', color: 'from-impact to-purple-400', slug: 'ghid-wcag-accesibilitate-web' },
+            ].map((post) => (
+              <StaggerItem key={post.slug}>
+                <motion.article whileHover={{ y: -6 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className="bg-white rounded-2xl border border-border overflow-hidden group card-shine h-full flex flex-col">
+                  {/* Color header bar */}
+                  <div className={`h-2 w-full bg-gradient-to-r ${post.color}`} />
+                  <div className="p-6 flex-1 flex flex-col">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="px-2.5 py-0.5 bg-primary/5 text-primary text-xs font-semibold rounded-full">{post.category}</span>
+                      <span className="text-text-lighter text-xs">{post.date}</span>
+                      <span className="text-text-lighter text-xs">· {post.readTime} min</span>
+                    </div>
+                    <h3 className="font-bold text-text text-lg mb-2 group-hover:text-primary transition-colors">
+                      <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                    </h3>
+                    <p className="text-text-light text-sm leading-relaxed flex-1">{post.excerpt}</p>
+                    <Link href={`/blog/${post.slug}`} className="inline-flex items-center gap-1 text-primary text-sm font-semibold mt-4 group-hover:gap-2 transition-all">
+                      Citește <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+                    </Link>
+                  </div>
+                </motion.article>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
       {/* ====== PARTNERS ====== */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -332,7 +534,7 @@ export default function HomePage() {
             </h2>
           </FadeIn>
           <StaggerContainer className="flex flex-wrap justify-center items-center gap-5 lg:gap-8" staggerDelay={0.08}>
-            {['ANPD', 'MMSS', 'CNDR', 'UNICEF România', 'Fundația Motivation', 'ASCHF'].map((partner) => (
+            {['ANPD', 'MMSS', 'CNDR', 'UNICEF România', 'Fundația Motivation', 'ASCHF', 'CNADR', 'Camera de Comerț'].map((partner) => (
               <StaggerItem key={partner}>
                 <motion.div
                   whileHover={{ scale: 1.05, y: -2 }}
@@ -367,13 +569,22 @@ export default function HomePage() {
                   Înscrie-te gratuit pe UPA Hub și conectează-te cu sute de companii
                   care caută parteneri de încredere pentru colaborare.
                 </p>
-                <Link
-                  href="/inscrie-unitate"
-                  className="inline-flex items-center gap-2.5 px-10 py-4 bg-white text-primary font-bold rounded-2xl hover:shadow-xl hover:shadow-white/20 hover:-translate-y-1 transition-all text-lg"
-                >
-                  Înscrie Unitatea Ta
-                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link
+                    href="/inscrie-unitate"
+                    className="inline-flex items-center justify-center gap-2.5 px-10 py-4 bg-white text-primary font-bold rounded-2xl hover:shadow-xl hover:shadow-white/20 hover:-translate-y-1 transition-all text-lg"
+                  >
+                    Înscrie Unitatea Ta
+                    <ArrowRight className="w-5 h-5" aria-hidden="true" />
+                  </Link>
+                  <Link
+                    href="/faq"
+                    className="btn-glass inline-flex items-center justify-center gap-2.5 px-10 py-4 text-white font-semibold rounded-2xl text-lg"
+                  >
+                    <Lightbulb className="w-5 h-5" aria-hidden="true" />
+                    Întrebări frecvente
+                  </Link>
+                </div>
               </div>
             </div>
           </FadeIn>

@@ -289,3 +289,108 @@ html {
 html {
   font-size: calc(16px * var(--font-scale, 1));
 }
+
+/* ========== ANIMATED GRADIENT SHIMMER ========== */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-loading {
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease infinite;
+}
+.dark .shimmer-loading {
+  background: linear-gradient(90deg, #1E293B 25%, #334155 50%, #1E293B 75%);
+  background-size: 200% 100%;
+}
+
+/* ========== BLOG ARTICLE CONTENT ========== */
+.article-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.article-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.article-content p {
+  color: var(--color-text-light);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+.article-content ul, .article-content ol {
+  color: var(--color-text-light);
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.article-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+.article-content strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+.article-content a {
+  color: var(--color-primary-light);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.article-content blockquote {
+  border-left: 4px solid var(--color-primary);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--color-text-light);
+}
+
+/* ========== DARK MODE ENHANCEMENTS ========== */
+.dark .card-hover:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(37, 99, 235, 0.15);
+}
+.dark .btn-primary {
+  box-shadow: 0 4px 15px -3px rgba(37, 99, 235, 0.3);
+}
+.dark .btn-primary:hover {
+  box-shadow: 0 12px 35px -10px rgba(37, 99, 235, 0.6);
+}
+.dark input, .dark select, .dark textarea {
+  background-color: #1E293B;
+  border-color: #334155;
+  color: #F1F5F9;
+}
+.dark input::placeholder, .dark textarea::placeholder {
+  color: #64748B;
+}
+
+/* ========== PROSE / RICH TEXT ========== */
+.prose-custom {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+/* ========== GRADIENT MESH V2 (for variety) ========== */
+.mesh-gradient-warm {
+  background:
+    radial-gradient(at 30% 20%, rgba(245, 158, 11, 0.2) 0%, transparent 50%),
+    radial-gradient(at 70% 10%, rgba(239, 68, 68, 0.15) 0%, transparent 50%),
+    radial-gradient(at 0% 60%, rgba(124, 58, 237, 0.12) 0%, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+    linear-gradient(180deg, #1B4D8E 0%, #0F172A 100%);
+}
+
+/* ========== SCROLL REVEAL FOR NON-JS ========== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

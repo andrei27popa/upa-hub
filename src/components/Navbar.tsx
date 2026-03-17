@@ -11,8 +11,8 @@ const navLinks = [
   { href: '/unitati-protejate', label: 'Unități Protejate' },
   { href: '/tool-uri', label: 'Tool-uri' },
   { href: '/calculator', label: 'Calculator' },
+  { href: '/blog', label: 'Blog' },
   { href: '/despre', label: 'Despre' },
-  { href: '/resurse', label: 'Resurse' },
   { href: '/contact', label: 'Contact' },
 ];
 

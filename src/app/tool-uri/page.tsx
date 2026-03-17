@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Wrench, Sparkles } from 'lucide-react';
 import ToolCard from '@/components/ToolCard';
 import { FadeIn, AnimatedOrbs } from '@/components/animations';
-import { accessibilityTools, toolCategories, userTypes } from '@/lib/data';
+import { allAccessibilityTools, toolCategories, userTypes } from '@/lib/data';
 
 export default function ToolsPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,7 +13,7 @@ export default function ToolsPage() {
   const [selectedUserType, setSelectedUserType] = useState('Toți');
 
   const filteredTools = useMemo(() => {
-    return accessibilityTools.filter((tool) => {
+    return allAccessibilityTools.filter((tool) => {
       const matchesSearch = searchQuery === '' ||
         tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.description.toLowerCase().includes(searchQuery.toLowerCase());

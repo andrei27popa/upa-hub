@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Shield, Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
+import { Shield, Mail, Phone, MapPin, ArrowUpRight, Linkedin, Facebook, Twitter, Instagram } from 'lucide-react';
+import Newsletter from '@/components/Newsletter';
 
 export default function Footer() {
   return (
@@ -12,6 +13,11 @@ export default function Footer() {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl -translate-y-1/2" aria-hidden="true" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Newsletter Section */}
+        <div className="mb-14">
+          <Newsletter />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
@@ -34,6 +40,9 @@ export default function Footer() {
                 { href: '/despre', label: 'Despre UPA Hub' },
                 { href: '/resurse', label: 'Resurse' },
                 { href: '/ce-este-upa', label: 'Ce este o UPA?' },
+                { href: '/blog', label: 'Blog' },
+                { href: '/faq', label: 'Întrebări frecvente' },
+                { href: '/povesti-succes', label: 'Povești de succes' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-blue-200/60 hover:text-white text-sm transition-colors inline-flex items-center gap-1 group">
@@ -54,6 +63,7 @@ export default function Footer() {
                 { href: '/ce-este-upa', label: 'Beneficiile colaborării' },
                 { href: '/inscrie-unitate', label: 'Înscrie o unitate' },
                 { href: '/contact', label: 'Solicită consultanță' },
+                { href: '/calculator', label: 'Calculator Impact' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-blue-200/60 hover:text-white text-sm transition-colors inline-flex items-center gap-1 group">
@@ -85,7 +95,28 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Social Media */}
         <div className="mt-14 pt-8 border-t border-white/5">
+          <div className="flex justify-center gap-4 mb-8">
+            {[
+              { href: '#', icon: Linkedin, label: 'LinkedIn' },
+              { href: '#', icon: Facebook, label: 'Facebook' },
+              { href: '#', icon: Twitter, label: 'X (Twitter)' },
+              { href: '#', icon: Instagram, label: 'Instagram' },
+            ].map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-blue-200/60 hover:text-white hover:bg-white/10 transition-all"
+                aria-label={social.label}
+              >
+                <social.icon className="w-5 h-5" aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-blue-200/40 text-sm">
               &copy; {new Date().getFullYear()} UPA Hub. Toate drepturile rezervate.

@@ -5,9 +5,9 @@ import {
   Shield, Building2, Wrench, Users, CheckCircle2, Clock,
   XCircle, Eye, Plus, Search, BarChart3,
 } from 'lucide-react';
-import { protectedUnits, accessibilityTools } from '@/lib/data';
+import { protectedUnits, allAccessibilityTools } from '@/lib/data';
 
-type Tab = 'overview' | 'units' | 'tools' | 'requests';
+type Tab = 'overview' | 'units' | 'tools' | 'requests' | 'analytics';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<Tab>('overview');
@@ -47,6 +47,7 @@ export default function AdminPage() {
     { id: 'units', label: 'Unități Protejate', icon: Building2 },
     { id: 'tools', label: 'Tool-uri', icon: Wrench },
     { id: 'requests', label: 'Cereri Înscriere', icon: Clock },
+    { id: 'analytics', label: 'Analiză & Rapoarte', icon: BarChart3 },
   ];
 
   const pendingRequests = [
@@ -101,7 +102,7 @@ export default function AdminPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               {[
                 { label: 'Unități Active', value: protectedUnits.length, icon: Building2, color: 'text-primary', bg: 'bg-primary/10' },
-                { label: 'Tool-uri Disponibile', value: accessibilityTools.length, icon: Wrench, color: 'text-impact', bg: 'bg-impact/10' },
+                { label: 'Tool-uri Disponibile', value: allAccessibilityTools.length, icon: Wrench, color: 'text-impact', bg: 'bg-impact/10' },
                 { label: 'Cereri Noi', value: pendingRequests.length, icon: Clock, color: 'text-warning', bg: 'bg-warning/10' },
                 { label: 'Vizitatori Luna', value: '2.450', icon: Users, color: 'text-secondary', bg: 'bg-secondary/10' },
               ].map((stat) => (
@@ -242,7 +243,7 @@ export default function AdminPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {accessibilityTools.map((tool) => (
+                  {allAccessibilityTools.map((tool) => (
                     <tr key={tool.id} className="hover:bg-surface/50">
                       <td className="px-4 py-3 font-medium text-text">{tool.title}</td>
                       <td className="px-4 py-3 text-text-light hidden sm:table-cell">
@@ -305,6 +306,119 @@ export default function AdminPage() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+        {/* Analytics */}
+        {activeTab === 'analytics' && (
+          <div>
+            <h2 className="text-xl font-bold text-text mb-6">Analiză & Rapoarte</h2>
+
+            {/* Monthly Traffic Chart (CSS bars) */}
+            <div className="grid lg:grid-cols-2 gap-6 mb-6">
+              <div className="bg-white p-6 rounded-xl border border-border">
+                <h3 className="font-semibold text-text mb-4">Vizitatori Lunari</h3>
+                <div className="flex items-end gap-2 h-48">
+                  {[
+                    { month: 'Sep', value: 850 },
+                    { month: 'Oct', value: 1200 },
+                    { month: 'Nov', value: 1450 },
+                    { month: 'Dec', value: 980 },
+                    { month: 'Ian', value: 1680 },
+                    { month: 'Feb', value: 2100 },
+                    { month: 'Mar', value: 2450 },
+                  ].map((m) => (
+                    <div key={m.month} className="flex-1 flex flex-col items-center gap-1">
+                      <span className="text-xs font-bold text-primary">{m.value}</span>
+                      <div className="w-full bg-gradient-to-t from-primary to-primary-light rounded-t-lg transition-all" style={{ height: `${(m.value / 2500) * 100}%` }} />
+                      <span className="text-xs text-text-lighter">{m.month}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl border border-border">
+                <h3 className="font-semibold text-text mb-4">Distribuție pe Regiuni</h3>
+                <div className="space-y-3">
+                  {[
+                    { region: 'București', count: 4, pct: 33 },
+                    { region: 'Cluj', count: 3, pct: 25 },
+                    { region: 'Timiș', count: 2, pct: 17 },
+                    { region: 'Brașov', count: 2, pct: 17 },
+                    { region: 'Alte regiuni', count: 1, pct: 8 },
+                  ].map((r) => (
+                    <div key={r.region}>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-text font-medium">{r.region}</span>
+                        <span className="text-text-lighter">{r.count} unități ({r.pct}%)</span>
+                      </div>
+                      <div className="w-full h-2 bg-surface rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-secondary to-emerald-400 rounded-full" style={{ width: `${r.pct}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="bg-white p-6 rounded-xl border border-border">
+                <h3 className="font-semibold text-text mb-4">Top Domenii</h3>
+                <div className="space-y-3">
+                  {[
+                    { domain: 'IT & Digital', count: 3, color: 'bg-primary' },
+                    { domain: 'Servicii curățenie', count: 2, color: 'bg-secondary' },
+                    { domain: 'Ambalare', count: 2, color: 'bg-accent' },
+                    { domain: 'Reciclare', count: 1, color: 'bg-impact' },
+                    { domain: 'Artizanat', count: 1, color: 'bg-rose-500' },
+                  ].map((d) => (
+                    <div key={d.domain} className="flex items-center gap-3">
+                      <div className={`w-3 h-3 rounded-full ${d.color}`} />
+                      <span className="text-sm text-text flex-1">{d.domain}</span>
+                      <span className="text-sm font-bold text-text">{d.count}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl border border-border">
+                <h3 className="font-semibold text-text mb-4">Engagement Tool-uri</h3>
+                <div className="space-y-3">
+                  {[
+                    { tool: 'Contrast Checker', uses: 342 },
+                    { tool: 'Checklist Web', uses: 278 },
+                    { tool: 'Font Tester', uses: 189 },
+                    { tool: 'Heading Checker', uses: 145 },
+                  ].map((t) => (
+                    <div key={t.tool} className="flex items-center justify-between p-2 bg-surface rounded-lg">
+                      <span className="text-sm text-text">{t.tool}</span>
+                      <span className="text-sm font-bold text-impact">{t.uses} utilizări</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl border border-border">
+                <h3 className="font-semibold text-text mb-4">Metrici Cheie</h3>
+                <div className="space-y-4">
+                  {[
+                    { label: 'Rata conversie contacte', value: '12.3%', trend: '+2.1%', positive: true },
+                    { label: 'Timp mediu pe site', value: '4:32', trend: '+0:45', positive: true },
+                    { label: 'Bounce rate', value: '34%', trend: '-5%', positive: true },
+                    { label: 'Pagini/sesiune', value: '3.8', trend: '+0.4', positive: true },
+                  ].map((m) => (
+                    <div key={m.label} className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-text font-medium">{m.label}</p>
+                        <p className="text-lg font-bold text-text">{m.value}</p>
+                      </div>
+                      <span className={`text-xs font-semibold px-2 py-1 rounded-full ${m.positive ? 'bg-secondary/10 text-secondary' : 'bg-error/10 text-error'}`}>
+                        {m.trend}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}

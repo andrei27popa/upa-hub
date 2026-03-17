@@ -43,7 +43,7 @@ function TestimonialsSection() {
   const translateX = isDesktop ? `-${current * 51.5}%` : `-${current * 100}%`;
 
   return (
-    <section className="bg-white py-24">
+    <section className="bg-white py-14 lg:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FadeIn>
           <div className="flex justify-between items-end mb-12">
@@ -247,10 +247,10 @@ export default function HomePage() {
       </section>
 
       {/* ====== WHAT IS UPA ====== */}
-      <section className="bg-white py-24">
+      <section className="bg-white py-14 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
-            <div className="max-w-3xl mx-auto text-center mb-16">
+            <div className="max-w-3xl mx-auto text-center mb-10">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/5 text-primary text-sm font-semibold rounded-full mb-4">
                 <Shield className="w-4 h-4" aria-hidden="true" /> Despre UPA
               </span>
@@ -313,7 +313,7 @@ export default function HomePage() {
       </section>
 
       {/* ====== ROMANIA MAP ====== */}
-      <section className="bg-white py-16 lg:py-24">
+      <section className="bg-white py-10 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center mb-12">
@@ -337,7 +337,7 @@ export default function HomePage() {
       </section>
 
       {/* ====== FEATURED UNITS ====== */}
-      <section className="bg-surface dot-pattern py-24">
+      <section className="bg-surface dot-pattern py-14 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
             <div className="flex justify-between items-end mb-10">
@@ -376,10 +376,10 @@ export default function HomePage() {
       </section>
 
       {/* ====== HOW IT WORKS ====== */}
-      <section className="bg-white py-24">
+      <section className="bg-white py-14 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
-            <div className="max-w-3xl mx-auto text-center mb-16">
+            <div className="max-w-3xl mx-auto text-center mb-10">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary/5 text-secondary text-sm font-semibold rounded-full mb-4">
                 <Target className="w-4 h-4" aria-hidden="true" /> Cum funcționează
               </span>
@@ -418,7 +418,7 @@ export default function HomePage() {
       </section>
 
       {/* ====== FEATURED TOOLS ====== */}
-      <section className="bg-surface dot-pattern py-24">
+      <section className="bg-surface dot-pattern py-14 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
             <div className="flex justify-between items-end mb-10">
@@ -467,7 +467,7 @@ export default function HomePage() {
       </section>
 
       {/* ====== SOCIAL IMPACT ====== */}
-      <section className="relative mesh-gradient text-white py-24 overflow-hidden">
+      <section className="relative mesh-gradient text-white py-14 lg:py-20 overflow-hidden">
         <AnimatedOrbs />
         <div className="absolute inset-0 dot-pattern opacity-20" aria-hidden="true" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -511,7 +511,7 @@ export default function HomePage() {
       <TestimonialsSection />
 
       {/* ====== BLOG PREVIEW ====== */}
-      <section className="bg-surface dot-pattern py-24">
+      <section className="bg-surface dot-pattern py-14 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
             <div className="flex justify-between items-end mb-10">
@@ -600,7 +600,7 @@ export default function HomePage() {
       </section>
 
       {/* ====== CTA ====== */}
-      <section className="bg-surface py-20">
+      <section className="bg-surface py-14 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
             <div className="relative overflow-hidden rounded-3xl">

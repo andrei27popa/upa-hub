@@ -3,8 +3,42 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Heart, Shield, ChevronDown, Building2, Wrench, Calculator, BookOpen, BarChart3, HelpCircle, Map, GitCompareArrows } from 'lucide-react';
+import { Menu, X, Heart, Shield, ChevronDown, Building2, Wrench, Calculator, BookOpen, BarChart3, HelpCircle, Map, GitCompareArrows, LogIn, User, LogOut } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import DarkModeToggle from '@/components/DarkModeToggle';
+
+function useAuth() {
+  const [auth, setAuth] = useState<{ loggedIn: boolean; unitName?: string; unitId?: string } | null>(null);
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('upa-hub-auth');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.loggedIn) setAuth(parsed);
+      }
+    } catch { /* ignore */ }
+
+    const onStorage = () => {
+      try {
+        const stored = localStorage.getItem('upa-hub-auth');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          setAuth(parsed?.loggedIn ? parsed : null);
+        } else {
+          setAuth(null);
+        }
+      } catch { setAuth(null); }
+    };
+    window.addEventListener('storage', onStorage);
+    // Also listen for custom event for same-tab updates
+    window.addEventListener('upa-auth-change', onStorage);
+    return () => {
+      window.removeEventListener('storage', onStorage);
+      window.removeEventListener('upa-auth-change', onStorage);
+    };
+  }, []);
+  return auth;
+}
 
 const mainLinks = [
   { href: '/', label: 'Acasă' },
@@ -52,6 +86,14 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const auth = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem('upa-hub-auth');
+    window.dispatchEvent(new Event('upa-auth-change'));
+    router.push('/');
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -159,10 +201,29 @@ export default function Navbar() {
 
           <div className="hidden lg:flex items-center gap-3">
             <DarkModeToggle />
-            <Link href="/inscrie-unitate" className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl">
-              <Heart className="w-4 h-4" aria-hidden="true" />
-              Înscrie o Unitate
-            </Link>
+            {auth ? (
+              <>
+                <Link href="/dashboard" className={`inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-xl transition-all ${scrolled ? 'text-text-light hover:text-primary hover:bg-primary/5' : 'text-white/80 hover:text-white hover:bg-white/10'}`}>
+                  <User className="w-4 h-4" aria-hidden="true" />
+                  Dashboard
+                </Link>
+                <button onClick={handleLogout} className={`inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-xl transition-all ${scrolled ? 'text-text-lighter hover:text-error hover:bg-error/5' : 'text-white/60 hover:text-white hover:bg-white/10'}`}>
+                  <LogOut className="w-3.5 h-3.5" aria-hidden="true" />
+                  Ieși
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/autentificare" className={`inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl border transition-all ${scrolled ? 'border-border text-text-light hover:text-primary hover:border-primary/30' : 'border-white/20 text-white/80 hover:text-white hover:bg-white/10'}`}>
+                  <LogIn className="w-4 h-4" aria-hidden="true" />
+                  Autentificare
+                </Link>
+                <Link href="/inscrie-unitate" className="btn-primary inline-flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl">
+                  <Heart className="w-4 h-4" aria-hidden="true" />
+                  Înscrie o Unitate
+                </Link>
+              </>
+            )}
           </div>
 
           <div className="flex lg:hidden items-center gap-2">
@@ -188,7 +249,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden glass overflow-hidden"
+            className="lg:hidden bg-white/95 backdrop-blur-xl border-b border-border shadow-lg overflow-hidden"
           >
             <div className="px-4 py-4 space-y-1 max-h-[70vh] overflow-y-auto">
               {mobileLinks.map((link, i) => (
@@ -198,10 +259,26 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
-                <Link href="/inscrie-unitate" className="block mt-3 text-center px-4 py-2.5 btn-primary text-white font-semibold rounded-xl" onClick={() => setIsOpen(false)}>
-                  Înscrie o Unitate
-                </Link>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-3 space-y-2">
+                {auth ? (
+                  <>
+                    <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2.5 text-primary font-semibold bg-primary/5 rounded-xl" onClick={() => setIsOpen(false)}>
+                      <User className="w-4 h-4" /> Dashboard
+                    </Link>
+                    <button onClick={() => { handleLogout(); setIsOpen(false); }} className="w-full flex items-center gap-2 px-4 py-2.5 text-text-lighter font-medium rounded-xl hover:bg-surface transition-colors">
+                      <LogOut className="w-4 h-4" /> Deconectare
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/autentificare" className="flex items-center justify-center gap-2 px-4 py-2.5 border border-border text-text font-semibold rounded-xl" onClick={() => setIsOpen(false)}>
+                      <LogIn className="w-4 h-4" /> Autentificare
+                    </Link>
+                    <Link href="/inscrie-unitate" className="block text-center px-4 py-2.5 btn-primary text-white font-semibold rounded-xl" onClick={() => setIsOpen(false)}>
+                      Înscrie o Unitate
+                    </Link>
+                  </>
+                )}
               </motion.div>
             </div>
           </motion.div>

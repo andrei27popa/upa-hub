@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   MapPin, Users, Heart, Star, BadgeCheck, Globe, Mail, Phone,
-  Calendar, ArrowLeft, Building2, Send, Bookmark, Quote, Shield,
+  Calendar, ArrowLeft, Building2, Send, Bookmark, Quote, Shield, CreditCard,
 } from 'lucide-react';
 import { FadeIn, AnimatedCounter } from '@/components/animations';
 import { protectedUnits } from '@/lib/data';
@@ -58,10 +58,14 @@ export default function UnitDetailPage() {
             {/* Header Card */}
             <FadeIn>
               <div className="bg-white rounded-2xl border border-border overflow-hidden">
-                <div className="h-2 w-full bg-gradient-to-r from-secondary via-primary to-impact" />
-                <div className="p-6 lg:p-8">
+                <div className="h-32 relative w-full bg-gradient-to-r from-secondary via-primary to-impact overflow-hidden">
+                  <span className="absolute inset-0 flex items-center justify-center text-white/10 text-[8rem] font-extrabold leading-none select-none pointer-events-none" aria-hidden="true">
+                    {unit.name.charAt(0)}
+                  </span>
+                </div>
+                <div className="p-6 lg:p-8 -mt-10 relative">
                   <div className="flex items-start gap-4 mb-6">
-                    <motion.div whileHover={{ scale: 1.1, rotate: 5 }} className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-impact/10 flex items-center justify-center text-primary font-bold text-2xl shrink-0 ring-2 ring-primary/10" aria-hidden="true">
+                    <motion.div whileHover={{ scale: 1.1, rotate: 5 }} className="w-16 h-16 rounded-2xl bg-white shadow-lg flex items-center justify-center text-primary font-bold text-2xl shrink-0 ring-2 ring-primary/10" aria-hidden="true">
                       {unit.name.charAt(0)}
                     </motion.div>
                     <div className="flex-1">
@@ -227,6 +231,10 @@ export default function UnitDetailPage() {
                   <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-border text-text-light font-medium rounded-xl hover:bg-surface hover:text-rose-500 transition-all">
                     <Bookmark className="w-4 h-4" aria-hidden="true" /> Salvează la Favorite
                   </motion.button>
+                  <Link href={`/carte-vizita/${unit.id}`} className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-primary to-impact text-white font-semibold rounded-xl hover:opacity-90 transition-opacity">
+                    <CreditCard className="w-4 h-4" aria-hidden="true" />
+                    Carte de Vizită Digitală
+                  </Link>
                 </div>
 
                 {unit.certified && (

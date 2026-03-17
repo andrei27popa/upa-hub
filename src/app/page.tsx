@@ -2,15 +2,16 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   ArrowRight, Search, Shield, Users, Heart, TrendingUp,
   Building2, Wrench, CheckCircle2, Star, Handshake, Sparkles, Zap,
   Calculator, BookOpen, Quote, ChevronLeft, ChevronRight,
-  FileCheck, Palette, Globe, Target, Award, Lightbulb,
+  FileCheck, Palette, Globe, Target, Award, Lightbulb, MapPin,
 } from 'lucide-react';
 import UnitCard from '@/components/UnitCard';
 import ToolCard from '@/components/ToolCard';
+import RomaniaMap from '@/components/RomaniaMap';
 import { FadeIn, StaggerContainer, StaggerItem, AnimatedCounter, FloatingElement, AnimatedOrbs } from '@/components/animations';
 import { protectedUnits, accessibilityTools } from '@/lib/data';
 
@@ -25,10 +26,21 @@ const testimonials = [
 
 function TestimonialsSection() {
   const [current, setCurrent] = useState(0);
-  const testimonialsPerPage = typeof window !== 'undefined' && window.innerWidth >= 768 ? 2 : 1;
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 768);
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
+  const testimonialsPerPage = isDesktop ? 2 : 1;
   const maxIndex = Math.max(0, testimonials.length - testimonialsPerPage);
   const next = () => setCurrent(i => Math.min(i + 1, maxIndex));
   const prev = () => setCurrent(i => Math.max(i - 1, 0));
+
+  const translateX = isDesktop ? `-${current * 51.5}%` : `-${current * 100}%`;
 
   return (
     <section className="bg-white py-24">
@@ -58,11 +70,11 @@ function TestimonialsSection() {
         <div className="overflow-hidden">
           <motion.div
             className="flex gap-6"
-            animate={{ x: `-${current * (100 / 2 + 1.5)}%` }}
+            animate={{ x: translateX }}
             transition={{ type: 'spring', stiffness: 200, damping: 30 }}
           >
             {testimonials.map((t, i) => (
-              <motion.div key={i} className="min-w-[calc(50%-12px)] max-md:min-w-full" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
+              <motion.div key={i} className="min-w-full md:min-w-[calc(50%-12px)]" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                 <div className="bg-surface rounded-2xl p-8 border border-border h-full flex flex-col">
                   <div className="flex gap-1 mb-4" aria-label={`Rating: ${t.rating} din 5`}>
                     {Array.from({ length: 5 }).map((_, si) => (
@@ -101,7 +113,7 @@ export default function HomePage() {
   return (
     <>
       {/* ====== HERO ====== */}
-      <section className="relative min-h-[100vh] flex items-center mesh-gradient overflow-hidden">
+      <section className="relative min-h-[85vh] lg:min-h-[100vh] flex items-center mesh-gradient overflow-hidden">
         {/* Animated background orbs */}
         <AnimatedOrbs />
 
@@ -125,7 +137,7 @@ export default function HomePage() {
           </div>
         </FloatingElement>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 lg:py-40">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-40">
           <div className="max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -141,7 +153,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="text-5xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-6 tracking-tight"
+              className="text-3xl sm:text-4xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-6 tracking-tight"
             >
               Conectăm companiile{' '}
               <br className="hidden sm:block" />
@@ -153,7 +165,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="text-xl lg:text-2xl text-blue-100/80 leading-relaxed mb-10 max-w-2xl font-light"
+              className="text-lg sm:text-xl lg:text-2xl text-blue-100/80 leading-relaxed mb-10 max-w-2xl font-light"
             >
               Resursa centrală pentru colaborare cu unități protejate autorizate
               și instrumente digitale pentru accesibilitate și incluziune.
@@ -167,14 +179,14 @@ export default function HomePage() {
             >
               <Link
                 href="/unitati-protejate"
-                className="btn-primary inline-flex items-center justify-center gap-2.5 px-8 py-4 text-white font-semibold rounded-2xl text-lg"
+                className="btn-primary inline-flex items-center justify-center gap-2.5 px-8 py-3 text-base sm:py-4 sm:text-lg text-white font-semibold rounded-2xl"
               >
                 <Search className="w-5 h-5" aria-hidden="true" />
                 Găsește o Unitate Protejată
               </Link>
               <Link
                 href="/tool-uri"
-                className="btn-glass inline-flex items-center justify-center gap-2.5 px-8 py-4 text-white font-semibold rounded-2xl text-lg"
+                className="btn-glass inline-flex items-center justify-center gap-2.5 px-8 py-3 text-base sm:py-4 sm:text-lg text-white font-semibold rounded-2xl"
               >
                 <Wrench className="w-5 h-5" aria-hidden="true" />
                 Explorează Tool-uri
@@ -223,7 +235,7 @@ export default function HomePage() {
                   <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center bg-opacity-10`}>
                     <stat.icon className="w-6 h-6 text-white" aria-hidden="true" />
                   </div>
-                  <p className="text-3xl lg:text-4xl font-extrabold text-text">
+                  <p className="text-2xl lg:text-4xl font-extrabold text-text">
                     <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                   </p>
                   <p className="text-text-lighter text-sm mt-1 font-medium">{stat.label}</p>
@@ -300,6 +312,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ====== ROMANIA MAP ====== */}
+      <section className="bg-white py-16 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center mb-12">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/5 text-primary text-sm font-semibold rounded-full mb-4">
+                <MapPin className="w-4 h-4" aria-hidden="true" /> Prezență Națională
+              </span>
+              <h2 className="text-4xl lg:text-5xl font-extrabold text-text mb-5 tracking-tight">
+                Prezenți în <span className="gradient-text">toată România</span>
+              </h2>
+              <p className="text-text-light text-lg leading-relaxed">
+                Unitățile protejate partenere sunt distribuite în principalele centre urbane ale țării
+              </p>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <div className="overflow-x-auto">
+              <RomaniaMap units={protectedUnits} />
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ====== FEATURED UNITS ====== */}
       <section className="bg-surface dot-pattern py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -358,7 +394,7 @@ export default function HomePage() {
             {/* Connection line */}
             <div className="hidden lg:block absolute top-24 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-primary via-secondary via-accent to-impact opacity-20" aria-hidden="true" />
 
-            <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-4 gap-8" staggerDelay={0.15}>
+            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" staggerDelay={0.15}>
               {[
                 { step: '01', icon: Search, title: 'Descoperă', description: 'Explorează directorul de unități protejate. Filtrează după servicii, regiune sau domeniu de activitate.', color: 'from-primary to-primary-light' },
                 { step: '02', icon: FileCheck, title: 'Evaluează', description: 'Citește profilurile detaliate, verifică certificările și scorul de impact social al fiecărei unități.', color: 'from-secondary to-emerald-400' },
@@ -456,7 +492,7 @@ export default function HomePage() {
                   { value: 45, suffix: '%', label: 'Economie medie' },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <p className="text-3xl lg:text-4xl font-extrabold text-secondary-light">
+                    <p className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-secondary-light">
                       {stat.value >= 1000000
                         ? <>{stat.prefix}<AnimatedCounter value={2.5} suffix="M" duration={2} /></>
                         : <AnimatedCounter value={stat.value} suffix={stat.suffix} prefix={stat.prefix || ''} />
@@ -494,7 +530,7 @@ export default function HomePage() {
             </div>
           </FadeIn>
 
-          <StaggerContainer className="grid md:grid-cols-3 gap-6" staggerDelay={0.12}>
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" staggerDelay={0.12}>
             {[
               { title: 'Legea 448/2006: Tot ce trebuie să știi', category: 'Legislație', date: '15 Mar 2025', readTime: 8, excerpt: 'Ghid complet privind obligațiile angajatorilor cu peste 50 de angajați și avantajele colaborării cu unitățile protejate autorizate.', color: 'from-primary to-primary-light', slug: 'legea-448-2006-ghid-complet' },
               { title: '5 Beneficii ale colaborării cu o unitate protejată', category: 'Incluziune', date: '2 Mar 2025', readTime: 5, excerpt: 'Descoperă cum colaborarea cu unitățile protejate aduce beneficii economice, sociale și de imagine companiei tale.', color: 'from-secondary to-emerald-400', slug: '5-beneficii-colaborare-upa' },
@@ -525,26 +561,41 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ====== PARTNERS ====== */}
-      <section className="bg-white py-20">
+      {/* ====== SPONSORS & PARTNERS ====== */}
+      <section className="bg-white py-12 border-t border-border/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn>
-            <h2 className="text-center text-text-lighter text-sm font-semibold uppercase tracking-widest mb-10">
-              Parteneri și Susținători
-            </h2>
-          </FadeIn>
-          <StaggerContainer className="flex flex-wrap justify-center items-center gap-5 lg:gap-8" staggerDelay={0.08}>
+          <p className="text-center text-text-lighter text-xs font-semibold uppercase tracking-[0.2em] mb-8">
+            Proiect susținut de
+          </p>
+          {/* Main sponsor - large, centered */}
+          <div className="flex justify-center mb-10">
+            <a href="https://sponsor.ro" target="_blank" rel="noopener noreferrer" className="group">
+              <div className="px-10 py-5 bg-surface rounded-2xl border border-border/50 group-hover:border-primary/20 group-hover:shadow-lg transition-all flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-impact flex items-center justify-center">
+                  <Building2 className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="font-bold text-text text-lg">Sponsor Principal</p>
+                  <p className="text-text-lighter text-sm">Partener strategic UPA Hub</p>
+                </div>
+              </div>
+            </a>
+          </div>
+          {/* Partners row */}
+          <p className="text-center text-text-lighter text-xs font-medium uppercase tracking-wider mb-5">
+            Parteneri instituționali
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-6">
             {['ANPD', 'MMSS', 'CNDR', 'UNICEF România', 'Fundația Motivation', 'ASCHF', 'CNADR', 'Camera de Comerț'].map((partner) => (
-              <StaggerItem key={partner}>
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  className="px-8 py-4 bg-surface rounded-xl text-text-light font-semibold text-sm border border-border/50 hover:border-primary/20 hover:shadow-md transition-all cursor-default"
-                >
-                  {partner}
-                </motion.div>
-              </StaggerItem>
+              <motion.div
+                key={partner}
+                whileHover={{ scale: 1.05, y: -2 }}
+                className="px-6 py-3 bg-surface rounded-xl text-text-light font-semibold text-sm border border-border/50 hover:border-primary/20 hover:shadow-md transition-all cursor-default opacity-60 hover:opacity-100"
+              >
+                {partner}
+              </motion.div>
             ))}
-          </StaggerContainer>
+          </div>
         </div>
       </section>
 

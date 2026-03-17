@@ -394,3 +394,35 @@ html {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ========== PRINT STYLES ========== */
+@media print {
+  nav, footer, .skip-link,
+  button, .btn-primary, .btn-glass,
+  .dot-pattern, .mesh-gradient::before,
+  [role="complementary"] {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  .glass { background: white !important; backdrop-filter: none !important; }
+
+  a { color: #1B4D8E !important; text-decoration: underline; }
+  a::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
+  a[href^="#"]::after, a[href^="javascript"]::after { content: ""; }
+
+  h1, h2, h3 { page-break-after: avoid; color: black !important; }
+
+  .card-hover, .card-shine { box-shadow: none !important; transform: none !important; }
+  .card-shine::after { display: none; }
+
+  img { max-width: 100% !important; }
+
+  @page { margin: 2cm; }
+}

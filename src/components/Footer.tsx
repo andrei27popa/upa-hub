@@ -43,6 +43,7 @@ export default function Footer() {
                 { href: '/blog', label: 'Blog' },
                 { href: '/faq', label: 'Întrebări frecvente' },
                 { href: '/povesti-succes', label: 'Povești de succes' },
+                { href: '/impact', label: 'Impact Dashboard' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-blue-200/60 hover:text-white text-sm transition-colors inline-flex items-center gap-1 group">
@@ -64,6 +65,7 @@ export default function Footer() {
                 { href: '/inscrie-unitate', label: 'Înscrie o unitate' },
                 { href: '/contact', label: 'Solicită consultanță' },
                 { href: '/calculator', label: 'Calculator Impact' },
+                { href: '/compara', label: 'Compară Unități' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-blue-200/60 hover:text-white text-sm transition-colors inline-flex items-center gap-1 group">

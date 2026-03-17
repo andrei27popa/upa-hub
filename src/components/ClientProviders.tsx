@@ -5,6 +5,7 @@ import { ToastProvider } from '@/components/Toast';
 import { FavoritesProvider } from '@/lib/favorites';
 import AccessibilityWidget from '@/components/AccessibilityWidget';
 import CookieConsent from '@/components/CookieConsent';
+import KeyboardShortcuts from '@/components/KeyboardShortcuts';
 
 export default function ClientProviders({ children }: { children: ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
         {children}
         <AccessibilityWidget />
         <CookieConsent />
+        <KeyboardShortcuts />
       </FavoritesProvider>
     </ToastProvider>
   );

@@ -59,6 +59,9 @@ export default function RootLayout({
   return (
     <html lang="ro" suppressHydrationWarning>
       <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#1B4D8E" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

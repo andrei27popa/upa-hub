@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { FadeIn, AnimatedCounter } from '@/components/animations';
 import { protectedUnits } from '@/lib/data';
+import ShareButton from '@/components/ShareButton';
 
 export default function UnitDetailPage() {
   const params = useParams();
@@ -66,6 +67,7 @@ export default function UnitDetailPage() {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-1 flex-wrap">
                         <h1 className="text-2xl lg:text-3xl font-extrabold text-text tracking-tight">{unit.name}</h1>
+                        <ShareButton title={unit.name} />
                         {unit.verified && (
                           <span className="badge-verified inline-flex items-center gap-1 px-3 py-1 bg-secondary/10 text-secondary text-sm font-semibold rounded-full">
                             <BadgeCheck className="w-4 h-4" aria-hidden="true" /> Verificată
